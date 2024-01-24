@@ -1,27 +1,34 @@
-import java.util.List;
+import Tasks.Epic;
+import Tasks.SubTask;
+import Tasks.Task;
+import Tasks.TaskStatus;
 
 public class Main {
     public static void main(String[] args) {
         // Создаем задачи
-        Task task1 = new Task("Task 1", "Description 1");
-        Task task2 = new Task("Task 2", "Description 2");
-
-        // Создаем подзадачи
-        SubTask subTask1 = new SubTask("SubTask 1", "SubDescription 1");
-        SubTask subTask2 = new SubTask("SubTask 2", "SubDescription 2");
+        Task task1 = new Task("Task 1", "Description 1",TaskStatus.NEW);
+        Task task2 = new Task("Task 2", "Description 2",TaskStatus.IN_PROGRESS);
 
         // Создаем эпики с подзадачами
-        Epic epic1 = new Epic("Epic 1", "Epic Description 1", List.of(subTask1, subTask2));
-        Epic epic2 = new Epic("Epic 2", "Epic Description 2", List.of(subTask1));
+        Epic epic1 = new Epic("Epic 1", "Tasks.Epic Description 1",TaskStatus.NEW);
+        Epic epic2 = new Epic("Epic 2", "Tasks.Epic Description 2",TaskStatus.NEW);
+
+        // Создаем подзадачи
+        SubTask subTask1 = new SubTask(3, "SubTask 1 in Tasks.Epic 1", "SubDescription 1", TaskStatus.NEW);
+        SubTask subTask2 = new SubTask(3, "SubTask 2 in Tasks.Epic 1", "SubDescription 2", TaskStatus.NEW);
+        SubTask subTask3 = new SubTask(4, "SubTask 1 in Tasks.Epic 2", "SubDescription 1", TaskStatus.NEW);
+
+
 
         // Создаем менеджера и сохраняем задачи
         Manager manager = new Manager();
-        manager.saveTask(epic1);
-        manager.saveTask(epic2);
-        manager.saveTask(task1);
-        manager.saveTask(task2);
-        manager.saveTask(subTask1);
-        manager.saveTask(subTask2);
+        manager.addTask(task1);
+        manager.addTask(task2);
+        manager.addEpic(epic1);
+        manager.addEpic(epic2);
+        manager.addSubTask(subTask1);
+        manager.addSubTask(subTask2);
+        manager.addSubTask(subTask3);
 
         // Выводим списки задач
         System.out.println("Task lists:");
@@ -30,11 +37,15 @@ public class Main {
         System.out.println(manager.getSubTasks());
 
         //Изменяем статусы
-        task1.setStatus(TaskStatus.IN_PROGRESS.toString());
-        subTask1.setStatus(TaskStatus.DONE.toString());
-        subTask2.setStatus(TaskStatus.IN_PROGRESS.toString());
-        manager.updateEpicStatus(epic1);
-        manager.updateEpicStatus(epic2);
+        task1.setStatus(TaskStatus.IN_PROGRESS);
+        subTask1.setStatus(TaskStatus.DONE);
+        subTask2.setStatus(TaskStatus.IN_PROGRESS);
+        subTask3.setStatus(TaskStatus.IN_PROGRESS);
+
+        manager.updateTask(task1);
+        manager.updateSubTask(subTask1);
+        manager.updateSubTask(subTask2);
+        manager.updateSubTask(subTask3);
 
         // Выводим обновленные списки
         System.out.println("\nLists after status update:");
@@ -43,8 +54,8 @@ public class Main {
         System.out.println(manager.getSubTasks());
 
         // Удаляем одну задачу и один эпик
-        manager.removeTaskById(task2.getId());
-        manager.removeTaskById(epic1.getId());
+        manager.removeTask(task2.getId());
+        manager.removeEpic(epic1.getId());
 
         // Выводим списки после удаления
         System.out.println("\nLists after removal:");
