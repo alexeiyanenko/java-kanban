@@ -1,8 +1,8 @@
-import Manager.Manager;
-import Tasks.Epic;
-import Tasks.SubTask;
-import Tasks.Task;
-import Tasks.TaskStatus;
+import manager.Manager;
+import tasks.Epic;
+import tasks.SubTask;
+import tasks.Task;
+import tasks.TaskStatus;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,13 +11,13 @@ public class Main {
         Task task2 = new Task("Task 2", "Description 2",TaskStatus.IN_PROGRESS);
 
         // Создаем эпики с подзадачами
-        Epic epic1 = new Epic("Epic 1", "Tasks.Epic Description 1",TaskStatus.NEW);
-        Epic epic2 = new Epic("Epic 2", "Tasks.Epic Description 2",TaskStatus.NEW);
+        Epic epic1 = new Epic("Epic 1", "Epic Description 1",TaskStatus.NEW);
+        Epic epic2 = new Epic("Epic 2", "Epic Description 2",TaskStatus.NEW);
 
         // Создаем подзадачи
-        SubTask subTask1 = new SubTask(3, "SubTask 1 in Tasks.Epic 1", "SubDescription 1", TaskStatus.NEW);
-        SubTask subTask2 = new SubTask(3, "SubTask 2 in Tasks.Epic 1", "SubDescription 2", TaskStatus.NEW);
-        SubTask subTask3 = new SubTask(4, "SubTask 1 in Tasks.Epic 2", "SubDescription 1", TaskStatus.NEW);
+        SubTask subTask1 = new SubTask(3, "SubTask 1 in Epic 1", "SubDescription 1", TaskStatus.NEW);
+        SubTask subTask2 = new SubTask(3, "SubTask 2 in Epic 1", "SubDescription 2", TaskStatus.NEW);
+        SubTask subTask3 = new SubTask(4, "SubTask 1 in Epic 2", "SubDescription 1", TaskStatus.NEW);
 
 
 
@@ -34,8 +34,9 @@ public class Main {
         // Выводим списки задач
         System.out.println("Task lists:");
         System.out.println(manager.getEpics());
-        System.out.println(manager.getTasks());
         System.out.println(manager.getSubTasks());
+        System.out.println(manager.getTasks());
+
 
         //Изменяем статусы
         task1.setStatus(TaskStatus.IN_PROGRESS);
@@ -51,8 +52,9 @@ public class Main {
         // Выводим обновленные списки
         System.out.println("\nLists after status update:");
         System.out.println(manager.getEpics());
-        System.out.println(manager.getTasks());
         System.out.println(manager.getSubTasks());
+        System.out.println(manager.getTasks());
+
 
         // Удаляем одну задачу и один эпик
         manager.removeTask(task2.getId());
@@ -61,7 +63,7 @@ public class Main {
         // Выводим списки после удаления
         System.out.println("\nLists after removal:");
         System.out.println(manager.getEpics());
-        System.out.println(manager.getTasks());
         System.out.println(manager.getSubTasks());
+        System.out.println(manager.getTasks());
     }
 }

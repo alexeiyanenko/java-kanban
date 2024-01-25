@@ -1,9 +1,9 @@
-package Manager;
+package manager;
 
-import Tasks.Epic;
-import Tasks.SubTask;
-import Tasks.Task;
-import Tasks.TaskStatus;
+import tasks.Epic;
+import tasks.SubTask;
+import tasks.Task;
+import tasks.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,14 +49,24 @@ public class Manager {
 
         int epicId = subTask.getEpicId();
         epics.get(epicId).getSubTaskOfEpicIDs().add(id);
+
+        updateEpicStatus(subTask.getEpicId());
     }
 
     //Обновление существующих задач
     public void updateTask(Task task) {
+        final Task savedTask = tasks.get(task.getId());
+        if (savedTask == null) {
+            return;
+        }
         tasks.put(task.getId(), task);
     }
 
     public void updateEpic(Epic epic) {
+        final Epic savedEpic = epics.get(epic.getId());
+        if (savedEpic == null) {
+            return;
+        }
         int id = epic.getId();
         String newName = epic.getName();
         String newDescription = epic.getDescription();
@@ -65,6 +75,10 @@ public class Manager {
     }
 
     public void updateSubTask(SubTask subTask) {
+        final Task savedSubTask = tasks.get(subTask.getId());
+        if (savedSubTask == null) {
+            return;
+        }
         subTasks.put(subTask.getId(), subTask);
         updateEpicStatus(subTask.getEpicId());
     }
@@ -105,6 +119,7 @@ public class Manager {
 
         for (Epic epic : epics.values()) {
             epic.getSubTaskOfEpicIDs().clear();
+            updateEpicStatus(epic.getId());
         }
     }
 
@@ -128,31 +143,29 @@ public class Manager {
 
 
     //Удаление по идентификатору
-    public boolean removeTask(int id) {
+    public void removeTask(int id) {
         if (tasks.containsKey(id)) {
             tasks.remove(id);
-            return true;
         }
-
-        return false;
     }
 
-    public boolean removeSubTask(int id) {
+    public void removeSubTask(int id) {
         if (subTasks.containsKey(id)) {
+            int epicId = subTasks.get(id).getEpicId();
             subTasks.remove(id);
-            return true;
-        }
 
-        return false;
+            epics.get(epicId).getSubTaskOfEpicIDs().remove((Integer)id);
+            updateEpicStatus(epicId);
+        }
     }
 
-    public boolean removeEpic(int id) {
+    public void removeEpic(int id) {
         if (epics.containsKey(id)) {
+            for (int subTaskId : epics.get(id).getSubTaskOfEpicIDs()) {
+                subTasks.remove(subTaskId);
+            }
             epics.remove(id);
-            return true;
         }
-
-        return false;
     }
 
     //Получение списка всех подзадач определённого эпика
@@ -190,36 +203,4 @@ public class Manager {
         }
         epic.setStatus(status);
     }
-
-
-    /*public void updateEpicStatus(int id) {
-        Tasks.Epic epic = epics.get(id);
-        List<Tasks.SubTask> subTasksOfEpic = getSubTasksOfEpic(epic);
-
-        if (subTasksOfEpic.isEmpty() || allSubTasksNew(subTasksOfEpic)) {
-            epic.setStatus(Tasks.TaskStatus.NEW);
-        } else if (allSubTasksDone(subTasksOfEpic)) {
-            epic.setStatus(Tasks.TaskStatus.DONE);
-        } else {
-            epic.setStatus(Tasks.TaskStatus.IN_PROGRESS);
-        }
-    }
-
-    // Вспомогательные методы для проверки статусов подзадач в эпике
-    private boolean allSubTasksNew(List<Tasks.SubTask> subTasks) {
-        for (Tasks.SubTask subTask : subTasks) {
-            if (!subTask.getStatus().equals(Tasks.TaskStatus.NEW)) {
-                return false;
-            }
-        }
-        return true;
-    }
-    private boolean allSubTasksDone(List<Tasks.SubTask> subTasks) {
-        for (Tasks.SubTask subTask : subTasks) {
-            if (!subTask.getStatus().equals(Tasks.TaskStatus.DONE)) {
-                return false;
-            }
-        }
-        return true;
-    }*/
 }
