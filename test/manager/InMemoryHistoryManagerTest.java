@@ -37,8 +37,8 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void CanNotAddAndGet11TasksToHistory() {
-        for (int i = 0; i < 15; i++) {
-            Task task = new Task("Task " + i, "Description " + i, TaskStatus.NEW);
+        for (int i = 0; i < 11; i++) {
+            Task task = new Task("Task " + (i+1), "Description " + i, TaskStatus.NEW);
             historyManager.addToHistory(task);
         }
 
