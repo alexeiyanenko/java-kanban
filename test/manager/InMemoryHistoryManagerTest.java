@@ -11,23 +11,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
     public HistoryManager historyManager;
+    public TaskManager manager;
 
     @BeforeEach
     void setUp() {
+        manager = Managers.getDefault();
         historyManager = Managers.getDefaultHistory();
     }
 
     @Test
-    void canAddAndGet10TasksToHistory() {
-        for (int i = 0; i < 10; i++) {
+    void canAddAndGet100TasksToHistory() {
+        for (int i = 0; i < 100; i++) {
             Task task = new Task("Task " + i, "Description " + i, TaskStatus.NEW);
-            historyManager.addToHistory(task);
+            manager.addTask(task);
+            historyManager.add(task);
         }
 
         List<Task> historyList = historyManager.getHistory();
 
         // Проверяем, что в истории 10 элементов
-        assertEquals(10, historyList.size());
+        assertEquals(100, historyList.size());
 
         System.out.println("History:");
         for (Task task : historyList) {
@@ -36,20 +39,13 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void canNotAddAndGet11TasksToHistory() {
-        for (int i = 0; i < 11; i++) {
-            Task task = new Task("Task " + (i+1), "Description " + i, TaskStatus.NEW);
-            historyManager.addToHistory(task);
-        }
-
-        List<Task> historyList = historyManager.getHistory();
-
-        // Проверяем, что в истории 10 элементов
-        assertEquals(10, historyList.size());
-
-        System.out.println("History:");
-        for (Task task : historyList) {
-            System.out.println(task);
-        }
+    public void whenTaskUpdated_thenNoImpactOnIdInHistory() {
+        Task task = new Task("Task ", "Description ", TaskStatus.NEW);
+        manager.addTask(task);
+        historyManager.add(task);
+        task.setDescription("Updated Description");
+        manager.updateTask(task);
+        assertEquals("Updated Description", historyManager.getHistory().get(0).getDescription());
     }
+
 }

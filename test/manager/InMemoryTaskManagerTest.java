@@ -71,4 +71,17 @@ class InMemoryTaskManagerTest {
         assertEquals(explicitIdTask, foundExplicitIdTask, "Найденная задача с явно указанным id не соответствует ожидаемой");
         assertEquals(generatedIdTask, foundGeneratedIdTask, "Найденная задача сгенерированным id не соответствует ожидаемой");
     }
+
+    @Test
+    public void whenSubtaskRemoved_thenAlsoRemovedFromEpic() {
+        manager.removeSubTask(subTask.getId());
+        assertTrue(manager.getSubTasksOfEpic(epic).isEmpty());
+    }
+
+    @Test
+    void subtasksShouldNotContainOldIdsAfterDeletion() {
+        manager.removeSubTask(subTask.getId()); // Удаление подзадачи
+        Epic updatedEpic = manager.getEpicById(epic.getId()); // Получение обновленного эпика
+        assertFalse(updatedEpic.getSubTaskOfEpicIDs().contains(subTask.getId()), "Deleted subtask ID should not be in the epic");
+    }
 }
