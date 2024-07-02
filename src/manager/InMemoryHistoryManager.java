@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public class InMemoryHistoryManager implements HistoryManager{
     private Node head;
     private Node tail;
-    private HashMap<Integer, Node> historyMap = new HashMap<>();
+    private final HashMap<Integer, Node> historyMap = new HashMap<>();
 
-    class Node {
+    private static class Node {
         Task task;
         Node prev;
         Node next;
@@ -61,6 +61,12 @@ public class InMemoryHistoryManager implements HistoryManager{
             tail = node.prev;
         }
         historyMap.remove(node.task.getId());
+    }
+
+    public void clearHistory() {
+        head = null;
+        tail = null;
+        historyMap.clear();
     }
 
     @Override

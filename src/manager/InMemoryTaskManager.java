@@ -131,6 +131,7 @@ public class InMemoryTaskManager implements TaskManager {
     //Удаление задач
     @Override
     public void removeAll() {
+        historyManager.clearHistory();
         tasks.clear();
         subTasks.clear();
         epics.clear();
@@ -138,11 +139,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllTasks() {
+        for (Task task : tasks.values()) {
+            historyManager.remove(task.getId());
+        }
         tasks.clear();
     }
 
     @Override
     public void removeAllSubTasks() {
+        for (SubTask subtask : subTasks.values()) {
+            historyManager.remove(subtask.getId());
+        }
         subTasks.clear();
 
         for (Epic epic : epics.values()) {
@@ -153,7 +160,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllEpics() {
+        for (Epic epic : epics.values()) {
+            historyManager.remove(epic.getId());
+        }
         epics.clear();
+
+        for (SubTask subtask : subTasks.values()) {
+            historyManager.remove(subtask.getId());
+        }
         subTasks.clear();
     }
 
@@ -193,6 +207,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeTask(int id) {
         if (tasks.containsKey(id)) {
             tasks.remove(id);
+            historyManager.remove(id);
         }
     }
 
@@ -201,6 +216,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (subTasks.containsKey(id)) {
             int epicId = subTasks.get(id).getEpicId();
             subTasks.remove(id);
+            historyManager.remove(id);
 
             epics.get(epicId).getSubTaskOfEpicIDs().remove((Integer)id);
             updateEpicStatus(epicId);
@@ -212,8 +228,10 @@ public class InMemoryTaskManager implements TaskManager {
         if (epics.containsKey(id)) {
             for (int subTaskId : epics.get(id).getSubTaskOfEpicIDs()) {
                 subTasks.remove(subTaskId);
+                historyManager.remove(subTaskId);
             }
             epics.remove(id);
+            historyManager.remove(id);
         }
     }
 
