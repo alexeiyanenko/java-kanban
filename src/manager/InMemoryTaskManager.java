@@ -203,7 +203,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void printHistory(){
+    public void printHistory() {
         System.out.println("History:");
         for (Task task : historyManager.getHistory()) {
             System.out.println(task);
@@ -247,11 +247,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<SubTask> getSubTasksOfEpic(Epic epic) {
         List<SubTask> subTasksOfEpic = new ArrayList<>();
-
         for(int id : epic.getSubTaskOfEpicIDs()) {
             subTasksOfEpic.add(subTasks.get(id));
         }
-
         return subTasksOfEpic;
     }
 
