@@ -14,7 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> tasks;
     private final Map<Integer, Epic> epics;
     private final Map<Integer, SubTask> subTasks;
-    public final HistoryManager historyManager;
+    private final HistoryManager historyManager;
     private static int generatorId = 0;
 
     public InMemoryTaskManager() {
