@@ -7,7 +7,7 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
-    private final static String TITLE = "id,type,name,status,description,epic\n";
+    private static final String TITLE = "id,type,name,status,description,epic\n";
 
     public FileBackedTaskManager(File file) {
         this.file = file;
