@@ -14,13 +14,21 @@ public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> tasks;
     private final Map<Integer, Epic> epics;
     private final Map<Integer, SubTask> subTasks;
-    public final HistoryManager historyManager = Managers.getDefaultHistory();
+    public final HistoryManager historyManager;
     private static int generatorId = 0;
 
     public InMemoryTaskManager() {
         tasks = new HashMap<>();
         epics = new HashMap<>();
         subTasks = new HashMap<>();
+        historyManager = Managers.getDefaultHistory();
+    }
+
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        tasks = new HashMap<>();
+        epics = new HashMap<>();
+        subTasks = new HashMap<>();
+        this.historyManager = historyManager;
     }
 
     //Добавление новых задач
@@ -123,6 +131,7 @@ public class InMemoryTaskManager implements TaskManager {
     public List<Epic> getEpics() {
         return new ArrayList<>(epics.values());
     }
+
     @Override
     public List<SubTask> getSubTasks() {
         return new ArrayList<>(subTasks.values());
@@ -200,7 +209,6 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println(task);
         }
     }
-
 
     //Удаление по идентификатору
     @Override
