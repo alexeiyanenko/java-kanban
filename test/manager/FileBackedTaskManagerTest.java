@@ -98,5 +98,20 @@ class FileBackedTaskManagerTest {
         assertEquals(1, loadedManager.getSubTasks().size(), "Subtask list size should be 1");
         assertEquals(subTask, loadedManager.getSubTaskById(subTask.getId()), "Loaded subtask should match original");
     }
+
+    @Test
+    void saveAndLoadSingleSubtaskWithDurationAndStartTime() {
+        Epic epic = new Epic(1, "Epic1", "Description1", TaskStatus.NEW);
+        manager.addEpic(epic);
+        SubTask subTask = new SubTask(epic.getId(), 2, "SubTask1", "Description2", TaskStatus.DONE, 10);
+        subTask.setStartTime(2024, 9, 1, 9, 0);
+        manager.addSubTask(subTask);
+
+        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
+
+        assertEquals(1, loadedManager.getEpics().size(), "Epic list size should be 1");
+        assertEquals(1, loadedManager.getSubTasks().size(), "Subtask list size should be 1");
+        assertEquals(subTask, loadedManager.getSubTaskById(subTask.getId()), "Loaded subtask should match original");
+    }
 }
 

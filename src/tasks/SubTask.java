@@ -1,17 +1,33 @@
 package tasks;
 
 import java.util.Objects;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class SubTask extends Task {
     private int epicId;
 
+    //Конструктор без id, duration и startTime
+    public SubTask(int epicId, String name, String description, TaskStatus status) {
+        super(name, description, status);
+        this.epicId = epicId;
+    }
+
+    //Конструктор без id и startTime, но с duration
+    public SubTask(int epicId, String name, String description, TaskStatus status, long minutes) {
+        super(name, description, status, minutes);
+        this.epicId = epicId;
+    }
+
+    //Конструктор c id, но без duration и startTime
     public SubTask(int epicId, int id, String name, String description, TaskStatus status) {
         super(id, name, description, status);
         this.epicId = epicId;
     }
 
-    public SubTask(int epicId, String name, String description, TaskStatus status) {
-        super(name, description, status);
+    //Конструктор c id и duration, но без startTime
+    public SubTask(int epicId, int id, String name, String description, TaskStatus status, long minutes) {
+        super(id, name, description, status, minutes);
         this.epicId = epicId;
     }
 
