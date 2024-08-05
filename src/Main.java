@@ -1,5 +1,6 @@
 import manager.Managers;
 import manager.TaskManager;
+import manager.HistoryManager;
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
@@ -22,7 +23,8 @@ public class Main {
         SubTask subTask3 = new SubTask(4, "SubTask 1 in Epic 2", "SubDescription 1", TaskStatus.NEW);
 
         // Создаем менеджеров
-        TaskManager manager = Managers.getDefault();
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        TaskManager manager = Managers.getDefault(historyManager);
 
         //Сохраняем задачи
         manager.addTask(task1);
@@ -38,6 +40,8 @@ public class Main {
         System.out.println(manager.getSubTaskById(7));
         System.out.println(manager.getTaskById(1));
 
-        manager.printHistory();
+        System.out.println("History:");
+        historyManager.getHistory().stream()
+                .forEach(System.out::println);
     }
 }

@@ -46,8 +46,6 @@ public interface TaskManager {
 
     Epic getEpicById(int epicId);
 
-    void printHistory();
-
     //Удаление по идентификатору
     void removeTask(int id);
 

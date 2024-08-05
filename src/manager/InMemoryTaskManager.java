@@ -258,13 +258,6 @@ public class InMemoryTaskManager implements TaskManager {
         return epic;
     }
 
-    @Override
-    public void printHistory() {
-        System.out.println("History:");
-        historyManager.getHistory().stream()
-                .forEach(System.out::println);
-    }
-
     //Удаление по идентификатору
     @Override
     public void removeTask(int id) {
