@@ -64,7 +64,7 @@ class EpicTest {
     }
 
     @Test
-    void shouldReturnIn_ProgressEpicStatusWithSubtasksNewAndDoneStatuses() {
+    void shouldReturnProgressEpicStatusWithSubtasksNewAndDoneStatuses() {
         subtask1.setStatus(TaskStatus.DONE);
         subtask2.setStatus(TaskStatus.DONE);
         subtask3.setStatus(TaskStatus.NEW);

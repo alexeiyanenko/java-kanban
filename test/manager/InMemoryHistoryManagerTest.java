@@ -19,6 +19,7 @@ class InMemoryHistoryManagerTest {
     private Subtask subtask;
     private Epic epic;
     private Task task2;
+    private Task task3;
 
     @BeforeEach
     void setUp() {
@@ -35,11 +36,56 @@ class InMemoryHistoryManagerTest {
 
         task2 = new Task("Task2", "Description2", TaskStatus.NEW);
         manager.addTask(task2);
+
+        task3 = new Task("Task3", "Description3", TaskStatus.NEW);
+        manager.addTask(task3);
     }
 
     @AfterEach
     void tearDown() {
         manager.removeAll();
+    }
+
+    @Test
+    public void removingTaskFromBeginningOfHistory() {
+        historyManager.add(task);
+        historyManager.add(task2);
+        historyManager.add(task3);
+
+        historyManager.remove(task.getId());
+
+        List<Task> history = historyManager.getHistory();
+        assertEquals(2, history.size());
+        assertEquals(task2, history.get(0));
+        assertEquals(task3, history.get(1));
+    }
+
+    @Test
+    public void removingTaskFromMiddleOfHistory() {
+        historyManager.add(task);
+        historyManager.add(task2);
+        historyManager.add(task3);
+
+        historyManager.remove(task2.getId());
+
+        List<Task> history = historyManager.getHistory();
+        assertEquals(2, history.size());
+        assertEquals(task, history.get(0));
+        assertEquals(task3, history.get(1));
+    }
+
+    @Test
+    public void removingTaskFromEndOfHistory() {
+        historyManager.add(task);
+        historyManager.add(task2);
+        historyManager.add(task3);
+
+        historyManager.remove(task3.getId());
+
+        List<Task> history = historyManager.getHistory();
+        assertEquals(2, history.size());
+        assertEquals(task, history.get(0));
+        assertEquals(task2, history.get(1));
     }
 
     @Test
@@ -93,7 +139,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void removingTaskFromHistory() {
+    void taskShouldBeRemovedFromHistoryAfterDeletingTask() {
         manager.getTaskById(task.getId()); // Просмотр задачи для добавления в историю
         manager.removeTask(task.getId()); // Удаляем задачу
 
@@ -102,7 +148,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void removingEpicFromHistory() {
+    void epicShouldBeRemovedFromHistoryAfterDeletingEpic() {
         manager.getTaskById(epic.getId());  // Просмотр эпика для добавления в историю
         manager.removeEpic(epic.getId());   // Удаляем эпик
 
@@ -111,7 +157,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void removingSubtaskFromHistory() {
+    void subtaskShouldBeRemovedFromHistoryAfterDeletingSubtask() {
         manager.getTaskById(subtask.getId());  // Просмотр подзадачи для добавления в историю
         manager.removeSubtask(subtask.getId());   // Удаляем подзадачи
 
@@ -120,7 +166,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void removingSubtaskFromHistoryAfterDeletingEpic() {
+    void subtasksShouldBeDeletedFromHistoryAfterRemovingEpic() {
         manager.getTaskById(subtask.getId());  // Просмотр подзадачи для добавления в историю
         manager.removeEpic(epic.getId());   // Удаляем эпик
 

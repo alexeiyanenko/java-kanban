@@ -142,7 +142,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     //Проверка на пересечение времени
-    private boolean isTimeOverlap(Task newTask) {
+    public boolean isTimeOverlap(Task newTask) {
         return prioritizedTasks.stream()
                 .anyMatch(task -> {
                     if (task.getId() == newTask.getId()) {

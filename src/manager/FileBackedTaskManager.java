@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
-    private static final String TITLE = "id, type, name, status, description, duration, start time, epic\n";
+    private static final String TITLE = "id,type,name,status,description,duration,start time,epic\n";
 
     public FileBackedTaskManager(File file) {
         this.file = file;
@@ -85,7 +85,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     writer.write(toString(subtask) + "\n");
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             throw new ManagerSaveException("Error saving tasks", e);
         }
     }
@@ -126,7 +126,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         }
                     });
 
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             throw new ManagerSaveException("Error loading tasks", e);
         }
         return manager;
