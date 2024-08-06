@@ -2,7 +2,7 @@ import manager.Managers;
 import manager.TaskManager;
 import manager.HistoryManager;
 import tasks.Epic;
-import tasks.SubTask;
+import tasks.Subtask;
 import tasks.Task;
 import tasks.TaskStatus;
 
@@ -18,9 +18,9 @@ public class Main {
         Epic epic2 = new Epic("Epic 2", "Epic Description 2",TaskStatus.NEW);
 
         // Создаем подзадачи
-        SubTask subTask1 = new SubTask(3, "SubTask 1 in Epic 1", "SubDescription 1", TaskStatus.NEW);
-        SubTask subTask2 = new SubTask(3, "SubTask 2 in Epic 1", "SubDescription 2", TaskStatus.NEW);
-        SubTask subTask3 = new SubTask(4, "SubTask 1 in Epic 2", "SubDescription 1", TaskStatus.NEW);
+        Subtask subtask1 = new Subtask(3, "Subtask 1 in Epic 1", "SubDescription 1", TaskStatus.NEW);
+        Subtask subtask2 = new Subtask(3, "Subtask 2 in Epic 1", "SubDescription 2", TaskStatus.NEW);
+        Subtask subtask3 = new Subtask(4, "Subtask 1 in Epic 2", "SubDescription 1", TaskStatus.NEW);
 
         // Создаем менеджеров
         HistoryManager historyManager = Managers.getDefaultHistory();
@@ -31,13 +31,13 @@ public class Main {
         manager.addTask(task2);
         manager.addEpic(epic1);
         manager.addEpic(epic2);
-        manager.addSubTask(subTask1);
-        manager.addSubTask(subTask2);
-        manager.addSubTask(subTask3);
+        manager.addSubtask(subtask1);
+        manager.addSubtask(subtask2);
+        manager.addSubtask(subtask3);
 
         //Обращение к задачам для сохранения в истории
         System.out.println(manager.getEpicById(3));
-        System.out.println(manager.getSubTaskById(7));
+        System.out.println(manager.getSubtaskById(7));
         System.out.println(manager.getTaskById(1));
 
         System.out.println("History:");

@@ -3,7 +3,7 @@ package manager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.Epic;
-import tasks.SubTask;
+import tasks.Subtask;
 import tasks.Task;
 import tasks.TaskStatus;
 
@@ -14,7 +14,7 @@ class InMemoryTaskManagerTest {
     private TaskManager manager;
     private Task task;
     private Epic epic;
-    private SubTask subTask;
+    private Subtask subtask;
 
     @BeforeEach
     void setUp() {
@@ -25,8 +25,8 @@ class InMemoryTaskManagerTest {
         manager.addTask(task);
         epic = new Epic("Epic", "Epic Description", TaskStatus.IN_PROGRESS);
         manager.addEpic(epic);
-        subTask = new SubTask(epic.getId(), "SubTask", "SubTask Description", TaskStatus.DONE);
-        manager.addSubTask(subTask);
+        subtask = new Subtask(epic.getId(), "Subtask", "Subtask Description", TaskStatus.DONE);
+        manager.addSubtask(subtask);
     }
 
     @Test
@@ -44,10 +44,10 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void canAddAndFindSubTaskById() {
-        SubTask foundSubTask = manager.getSubTaskById(subTask.getId());
-        assertNotNull(foundSubTask, "Подзадача не найдена");
-        assertEquals(subTask, foundSubTask, "Найденная подзадача не соответствует ожидаемой");
+    void canAddAndFindSubtaskById() {
+        Subtask foundSubtask = manager.getSubtaskById(subtask.getId());
+        assertNotNull(foundSubtask, "Подзадача не найдена");
+        assertEquals(subtask, foundSubtask, "Найденная подзадача не соответствует ожидаемой");
     }
 
     @Test
@@ -74,14 +74,14 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void whenSubtaskRemoved_thenAlsoRemovedFromEpic() {
-        manager.removeSubTask(subTask.getId());
-        assertTrue(manager.getSubTasksOfEpic(epic).isEmpty());
+        manager.removeSubtask(subtask.getId());
+        assertTrue(manager.getSubtasksOfEpic(epic).isEmpty());
     }
 
     @Test
     void subtasksShouldNotContainOldIdsAfterDeletion() {
-        manager.removeSubTask(subTask.getId()); // Удаление подзадачи
+        manager.removeSubtask(subtask.getId()); // Удаление подзадачи
         Epic updatedEpic = manager.getEpicById(epic.getId()); // Получение обновленного эпика
-        assertFalse(updatedEpic.getSubTaskOfEpicIDs().contains(subTask.getId()), "Deleted subtask ID should not be in the epic");
+        assertFalse(updatedEpic.getSubtaskOfEpicIDs().contains(subtask.getId()), "Deleted subtask ID should not be in the epic");
     }
 }

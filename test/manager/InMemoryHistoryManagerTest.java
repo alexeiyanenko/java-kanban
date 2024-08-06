@@ -1,7 +1,7 @@
 package manager;
 
 import tasks.Task;
-import tasks.SubTask;
+import tasks.Subtask;
 import tasks.Epic;
 import tasks.TaskStatus;
 
@@ -16,7 +16,7 @@ class InMemoryHistoryManagerTest {
     public HistoryManager historyManager;
     public TaskManager manager;
     private Task task;
-    private SubTask subtask;
+    private Subtask subtask;
     private Epic epic;
     private Task task2;
 
@@ -30,8 +30,8 @@ class InMemoryHistoryManagerTest {
 
         epic = new Epic("Epic", "Epic Description", TaskStatus.NEW);
         manager.addEpic(epic);  // Сначала добавляем Epic
-        subtask = new SubTask(epic.getId(), "Subtask", "Subtask Description", TaskStatus.NEW);
-        manager.addSubTask(subtask);  // Теперь добавляем SubTask, когда Epic уже существует
+        subtask = new Subtask(epic.getId(), "Subtask", "Subtask Description", TaskStatus.NEW);
+        manager.addSubtask(subtask);  // Теперь добавляем Subtask, когда Epic уже существует
 
         task2 = new Task("Task2", "Description2", TaskStatus.NEW);
         manager.addTask(task2);
@@ -54,7 +54,7 @@ class InMemoryHistoryManagerTest {
     void tasksInHistoryAreInOrderOfViewing() {
         //Просмотр задач для добавления в историю
         manager.getTaskById(task.getId());
-        manager.getSubTaskById(subtask.getId());
+        manager.getSubtaskById(subtask.getId());
         manager.getTaskById(task2.getId());
 
         // Проверка порядка в истории
@@ -69,7 +69,7 @@ class InMemoryHistoryManagerTest {
     void whenViewTaskSecondTime_TaskIsAddedToHistory_OldRecordIsDeletedFromHistory() {
         //Просмотр задач для добавления в историю
         manager.getTaskById(task.getId());  // Просмотр задачи для добавления в историю
-        manager.getSubTaskById(subtask.getId());
+        manager.getSubtaskById(subtask.getId());
         manager.getTaskById(task.getId());  // Просмотр обычной задачи во второй раз
 
         // Проверка порядка в истории
@@ -83,7 +83,7 @@ class InMemoryHistoryManagerTest {
     void clearingHistoryAfterDeletingAllTasks() {
         //Просмотр задач для добавления в историю
         manager.getTaskById(task.getId());
-        manager.getSubTaskById(subtask.getId());
+        manager.getSubtaskById(subtask.getId());
         manager.getTaskById(task2.getId());
 
         manager.removeAll(); // Удаление всех задач
@@ -113,7 +113,7 @@ class InMemoryHistoryManagerTest {
     @Test
     void removingSubtaskFromHistory() {
         manager.getTaskById(subtask.getId());  // Просмотр подзадачи для добавления в историю
-        manager.removeSubTask(subtask.getId());   // Удаляем подзадачи
+        manager.removeSubtask(subtask.getId());   // Удаляем подзадачи
 
         // Проверяем, что история пуста
         assertTrue(historyManager.getHistory().isEmpty(), "History should be empty after removing the subtask");

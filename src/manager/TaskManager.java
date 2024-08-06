@@ -1,7 +1,7 @@
 package manager;
 
 import tasks.Epic;
-import tasks.SubTask;
+import tasks.Subtask;
 import tasks.Task;
 
 import java.util.List;
@@ -12,14 +12,14 @@ public interface TaskManager {
 
     void addEpic(Epic epic);
 
-    void addSubTask(SubTask subTask);
+    void addSubtask(Subtask subtask);
 
     //Обновление существующих задач
     void updateTask(Task task);
 
     void updateEpic(Epic epic);
 
-    void updateSubTask(SubTask subTask);
+    void updateSubtask(Subtask subtask);
 
     //Получение списков задач
     List<Task> getAllTasks();
@@ -28,33 +28,33 @@ public interface TaskManager {
 
     List<Epic> getEpics();
 
-    List<SubTask> getSubTasks();
+    List<Subtask> getSubtasks();
 
     //Удаление задач
     void removeAll();
 
     void removeAllTasks();
 
-    void removeAllSubTasks();
+    void removeAllSubtasks();
 
     void removeAllEpics();
 
     //Получение по идентификатору
     Task getTaskById(int taskId);
 
-    SubTask getSubTaskById(int subTaskId);
+    Subtask getSubtaskById(int subtaskId);
 
     Epic getEpicById(int epicId);
 
     //Удаление по идентификатору
     void removeTask(int id);
 
-    void removeSubTask(int id);
+    void removeSubtask(int id);
 
     void removeEpic(int id);
 
     //Получение списка всех подзадач определённого эпика
-    List<SubTask> getSubTasksOfEpic(Epic epic);
+    List<Subtask> getSubtasksOfEpic(Epic epic);
 
     // Метод для управления статусами эпиков
     public void updateEpicStatus(int epicId);

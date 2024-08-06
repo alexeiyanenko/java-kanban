@@ -28,8 +28,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void addSubTask(SubTask subtask) {
-        super.addSubTask(subtask);
+    public void addSubtask(Subtask subtask) {
+        super.addSubtask(subtask);
         save();
     }
 
@@ -46,8 +46,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateSubTask(SubTask subtask) {
-        super.updateSubTask(subtask);
+    public void updateSubtask(Subtask subtask) {
+        super.updateSubtask(subtask);
         save();
     }
 
@@ -64,8 +64,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void removeSubTask(int id) {
-        super.removeSubTask(id);
+    public void removeSubtask(int id) {
+        super.removeSubtask(id);
         save();
     }
 
@@ -81,7 +81,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
             for (Epic epic : getEpics()) {
                 writer.write(toString(epic) + "\n");
-                for (SubTask subtask : getSubTasksOfEpic(epic)) {
+                for (Subtask subtask : getSubtasksOfEpic(epic)) {
                     writer.write(toString(subtask) + "\n");
                 }
             }
@@ -94,7 +94,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String duration = task.getDuration() != null ? String.valueOf(task.getDuration().toMinutes()) : "null";
         String startTime = task.getStartTime() != null ? task.getStartTime().toString() : "null";
         if (task.getType() == TaskType.SUBTASK) {
-            SubTask subtask = (SubTask) task;
+            Subtask subtask = (Subtask) task;
             return String.format("%d,SUBTASK,%s,%s,%s,%s,%s,%d",
                     subtask.getId(), subtask.getName(), subtask.getStatus(),
                     subtask.getDescription(), duration, startTime, subtask.getEpicId());
@@ -114,23 +114,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
         try {
             List<String> lines = Files.readAllLines(file.toPath());
-            /*for (String line : lines.subList(1, lines.size())) { // Skip header
-                Task task = fromString(line);
-                if (task.getType() == TaskType.EPIC) {
-                    manager.addEpic((Epic) task);
-                } else if (task.getType() == TaskType.SUBTASK) {
-                    manager.addSubTask((SubTask) task);
-                } else {
-                    manager.addTask(task);
-                }
-            }*/
             lines.subList(1, lines.size()).stream()
                     .map(FileBackedTaskManager::fromString)
                     .forEach(task -> {
                         if (task.getType() == TaskType.EPIC) {
                             manager.addEpic((Epic) task);
                         } else if (task.getType() == TaskType.SUBTASK) {
-                            manager.addSubTask((SubTask) task);
+                            manager.addSubtask((Subtask) task);
                         } else {
                             manager.addTask(task);
                         }
@@ -165,10 +155,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 return epic;
             case SUBTASK:
                 int epicId = Integer.parseInt(fields[7]);
-                SubTask subTask = new SubTask(epicId, id, name, description, status);
-                subTask.setDuration(duration);
-                subTask.setStartTime(startTime);
-                return subTask;
+                Subtask subtask = new Subtask(epicId, id, name, description, status);
+                subtask.setDuration(duration);
+                subtask.setStartTime(startTime);
+                return subtask;
             default:
                 throw new IllegalArgumentException("Unknown task type: " + type);
         }
