@@ -42,9 +42,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @AfterEach
-    void tearDown() {
-        manager.removeAll();
-    }
+    void tearDown() { manager.removeAll(); }
 
     @Test
     public void removingTaskFromBeginningOfHistory() {
@@ -139,7 +137,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void taskShouldBeRemovedFromHistoryAfterDeletingTask() {
+    void taskShouldBeRemovedFromHistoryAfterDeleting() {
         manager.getTaskById(task.getId()); // Просмотр задачи для добавления в историю
         manager.removeTask(task.getId()); // Удаляем задачу
 
@@ -148,7 +146,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void epicShouldBeRemovedFromHistoryAfterDeletingEpic() {
+    void epicShouldBeRemovedFromHistoryAfterDeleting() {
         manager.getTaskById(epic.getId());  // Просмотр эпика для добавления в историю
         manager.removeEpic(epic.getId());   // Удаляем эпик
 
@@ -157,8 +155,8 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void subtaskShouldBeRemovedFromHistoryAfterDeletingSubtask() {
-        manager.getTaskById(subtask.getId());  // Просмотр подзадачи для добавления в историю
+    void subtaskShouldBeRemovedFromHistoryAfterDeleting() {
+        manager.getSubtaskById(subtask.getId());  // Просмотр подзадачи для добавления в историю
         manager.removeSubtask(subtask.getId());   // Удаляем подзадачи
 
         // Проверяем, что история пуста
@@ -172,5 +170,27 @@ class InMemoryHistoryManagerTest {
 
         // Проверяем, что история пуста
         assertTrue(historyManager.getHistory().isEmpty(), "History should be empty after removing the epic");
+    }
+
+    @Test
+    public void taskShouldBeRemovedFromAllStructures() {
+        historyManager.add(task);
+        historyManager.add(task2);
+        manager.removeTask(task.getId());
+
+        List<Task> history = historyManager.getHistory();
+        assertFalse(history.contains(task), "Task should be removed from history");
+        assertTrue(history.contains(task2), "Other tasks should remain in history");
+    }
+
+    @Test
+    public void epicAndSubtasksShouldBeRemovedFromAllStructures() {
+        historyManager.add(epic);
+        historyManager.add(subtask);
+        manager.removeEpic(epic.getId());
+
+        List<Task> history = historyManager.getHistory();
+        assertFalse(history.contains(epic), "Epic should be removed from history");
+        assertFalse(history.contains(subtask), "Subtasks of the epic should be removed from history");
     }
 }

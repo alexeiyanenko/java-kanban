@@ -1,12 +1,13 @@
 package tasks;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.time.LocalDateTime;
 
 public class Epic extends Task {
     private LocalDateTime endTime;
-    private ArrayList<Integer> subtaskOfEpicIDs;
+    private List<Integer> subtaskOfEpicIDs;
 
     public Epic(String name, String description, TaskStatus status) {
         super(name, description, status);
@@ -23,11 +24,11 @@ public class Epic extends Task {
         return TaskType.EPIC;
     }
 
-    public ArrayList<Integer> getSubtaskOfEpicIDs() {
+    public List<Integer> getSubtaskOfEpicIDs() {
         return subtaskOfEpicIDs;
     }
 
-    public void setSubtaskOfEpicIDs(ArrayList<Integer> subtaskOfEpicIDs) {
+    public void setSubtaskOfEpicIDs(List<Integer> subtaskOfEpicIDs) {
         this.subtaskOfEpicIDs = subtaskOfEpicIDs;
     }
 

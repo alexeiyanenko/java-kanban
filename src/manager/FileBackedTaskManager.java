@@ -81,7 +81,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
             for (Epic epic : getEpics()) {
                 writer.write(toString(epic) + "\n");
-                for (Subtask subtask : getSubtasksOfEpic(epic)) {
+                for (Subtask subtask : getSubtasksOfEpic(epic.getId())) {
                     writer.write(toString(subtask) + "\n");
                 }
             }

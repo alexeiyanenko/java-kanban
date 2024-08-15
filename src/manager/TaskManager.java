@@ -56,7 +56,7 @@ public interface TaskManager {
     void removeEpic(int id);
 
     //Получение списка всех подзадач определённого эпика
-    List<Subtask> getSubtasksOfEpic(Epic epic);
+    List<Subtask> getSubtasksOfEpic(int id);
 
     // Метод для управления статусами эпиков
     public void updateEpicStatus(int epicId);

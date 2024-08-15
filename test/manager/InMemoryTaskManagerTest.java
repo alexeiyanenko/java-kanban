@@ -126,16 +126,19 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     }
 
     @Test
-    public void testOverlap() { //Накладка времени выполнения задач - 10 минут
-        task.setStartTime(2024, 8, 6, 9, 0);
+    public void testOverlap() {
+        task.setStartTime(2024, 8, 6, 9, 0); // Накладка времени выполнения задач - 10 минут
         task.setDuration(70);
         subtask.setStartTime(2024, 8, 6, 10, 0);
         subtask.setDuration(30);
 
-        manager.updateTask(task);
-        manager.updateTask(subtask);
-
-        assertTrue(manager.isTimeOverlap(subtask));
+        try {
+            manager.updateTask(task);
+            manager.updateTask(subtask);
+            fail("Expected IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Task time overlaps with an existing task", e.getMessage());
+        }
     }
 
     @Test
@@ -166,7 +169,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @Test
     public void whenSubtaskRemoved_thenAlsoRemovedFromEpic() {
         manager.removeSubtask(subtask.getId());
-        assertTrue(manager.getSubtasksOfEpic(epic).isEmpty());
+        assertTrue(manager.getSubtasksOfEpic(epic.getId()).isEmpty());
     }
 
     @Test
@@ -182,7 +185,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         assertEquals(epic.getId(), tempSubtask.getEpicId());
 
         Epic tempEpic = manager.getEpicById(epic.getId());
-        assertTrue(manager.getSubtasksOfEpic(tempEpic).contains(subtask));
+        assertTrue(manager.getSubtasksOfEpic(tempEpic.getId()).contains(subtask));
         assertTrue(tempEpic.getSubtaskOfEpicIDs().contains(subtask.getId()));
     }
 }
