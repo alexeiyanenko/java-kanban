@@ -11,38 +11,38 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class EpicTest {
 
     public Epic epic;
-    public SubTask subTask1;
-    public SubTask subTask2;
-    public SubTask subTask3;
+    public Subtask subtask1;
+    public Subtask subtask2;
+    public Subtask subtask3;
     public TaskManager manager;
 
     @BeforeEach
-    void createEpicAndSubTasks() {
+    void createEpicAndSubtasks() {
         manager = new InMemoryTaskManager();
         epic = new Epic("Epic", "Description of epic", TaskStatus.NEW);
         manager.addEpic(epic);
         int epicId = epic.getId();
-        subTask1 = new SubTask(epicId, "Subtask 1", "Description of subtask1", TaskStatus.NEW);
-        subTask2 = new SubTask(epicId, "Subtask 2", "Description of subtask2", TaskStatus.NEW);
-        subTask3 = new SubTask(epicId, "Subtask 3", "Description of subtask3", TaskStatus.NEW);
-        manager.addSubTask(subTask1);
-        manager.addSubTask(subTask2);
-        manager.addSubTask(subTask3);
+        subtask1 = new Subtask(epicId, "Subtask 1", "Description of subtask1", TaskStatus.NEW);
+        subtask2 = new Subtask(epicId, "Subtask 2", "Description of subtask2", TaskStatus.NEW);
+        subtask3 = new Subtask(epicId, "Subtask 3", "Description of subtask3", TaskStatus.NEW);
+        manager.addSubtask(subtask1);
+        manager.addSubtask(subtask2);
+        manager.addSubtask(subtask3);
     }
 
     @AfterEach
-    void removeEpicAndSubTasks() {
+    void removeEpicAndSubtasks() {
         manager.removeAllEpics();
     }
 
     @Test
     void shouldReturnNewEpicStatusWithoutSubtasks() {
-        manager.removeAllSubTasks();
+        manager.removeAllSubtasks();
         assertEquals(TaskStatus.NEW, epic.getStatus(), "Статус пустого эпика не NEW");
     }
 
     @Test
-    void epicCannotBeAddedAsSubTaskToItself() {
+    void epicCannotBeAddedAsSubtaskToItself() {
         manager.addTask(epic);
     }
 
@@ -54,37 +54,37 @@ class EpicTest {
 
     @Test
     void shouldReturnProgressEpicStatusWithSubtasksProgressStatus() {
-        subTask1.setStatus(TaskStatus.IN_PROGRESS);
-        subTask2.setStatus(TaskStatus.IN_PROGRESS);
+        subtask1.setStatus(TaskStatus.IN_PROGRESS);
+        subtask2.setStatus(TaskStatus.IN_PROGRESS);
 
-        manager.updateSubTask(subTask1);
-        manager.updateSubTask(subTask2);
+        manager.updateSubtask(subtask1);
+        manager.updateSubtask(subtask2);
 
         assertEquals(TaskStatus.IN_PROGRESS, epic.getStatus(), "Статус эпика с сабтасками со статусом IN_PROGRESS не IN_PROGRESS");
     }
 
     @Test
-    void shouldReturnIn_ProgressEpicStatusWithSubtasksNewAndDoneStatuses() {
-        subTask1.setStatus(TaskStatus.DONE);
-        subTask2.setStatus(TaskStatus.DONE);
-        subTask3.setStatus(TaskStatus.NEW);
+    void shouldReturnProgressEpicStatusWithSubtasksNewAndDoneStatuses() {
+        subtask1.setStatus(TaskStatus.DONE);
+        subtask2.setStatus(TaskStatus.DONE);
+        subtask3.setStatus(TaskStatus.NEW);
 
-        manager.updateSubTask(subTask1);
-        manager.updateSubTask(subTask2);
-        manager.updateSubTask(subTask3);
+        manager.updateSubtask(subtask1);
+        manager.updateSubtask(subtask2);
+        manager.updateSubtask(subtask3);
 
         assertEquals(TaskStatus.IN_PROGRESS, epic.getStatus(), "Статус эпика с сабтасками со статусами NEW и DONE не IN_PROGRESS");
     }
 
     @Test
     void shouldReturnDoneEpicStatusWithAllSubtasksDoneStatus() {
-        subTask1.setStatus(TaskStatus.DONE);
-        subTask2.setStatus(TaskStatus.DONE);
-        subTask3.setStatus(TaskStatus.DONE);
+        subtask1.setStatus(TaskStatus.DONE);
+        subtask2.setStatus(TaskStatus.DONE);
+        subtask3.setStatus(TaskStatus.DONE);
 
-        manager.updateSubTask(subTask1);
-        manager.updateSubTask(subTask2);
-        manager.updateSubTask(subTask3);
+        manager.updateSubtask(subtask1);
+        manager.updateSubtask(subtask2);
+        manager.updateSubtask(subtask3);
 
         assertEquals(TaskStatus.DONE, epic.getStatus(), "Статус эпика со всеми сабтасками в статусе DONE не DONE");
     }
