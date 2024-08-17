@@ -18,18 +18,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> tasks;
     private final Map<Integer, Epic> epics;
     private final Map<Integer, Subtask> subtasks;
-    private final Set<Task> prioritizedTasks = new TreeSet<>((task1, task2) -> {
-        if (task1.getStartTime() == null && task2.getStartTime() == null) {
-            return Integer.compare(task1.getId(), task2.getId());
-        }
-        if (task1.getStartTime() == null) {
-            return 1;
-        }
-        if (task2.getStartTime() == null) {
-            return -1;
-        }
-        return task1.getStartTime().compareTo(task2.getStartTime());
-    });
+    private final Set<Task> prioritizedTasks;
     private final HistoryManager historyManager;
     private static int generatorId = 0;
 
@@ -37,6 +26,18 @@ public class InMemoryTaskManager implements TaskManager {
         tasks = new HashMap<>();
         epics = new HashMap<>();
         subtasks = new HashMap<>();
+        prioritizedTasks = new TreeSet<>((task1, task2) -> {
+            if (task1.getStartTime() == null && task2.getStartTime() == null) {
+                return Integer.compare(task1.getId(), task2.getId());
+            }
+            if (task1.getStartTime() == null) {
+                return 1;
+            }
+            if (task2.getStartTime() == null) {
+                return -1;
+            }
+            return task1.getStartTime().compareTo(task2.getStartTime());
+        });
         historyManager = Managers.getDefaultHistory();
     }
 
@@ -44,6 +45,18 @@ public class InMemoryTaskManager implements TaskManager {
         tasks = new HashMap<>();
         epics = new HashMap<>();
         subtasks = new HashMap<>();
+        prioritizedTasks = new TreeSet<>((task1, task2) -> {
+            if (task1.getStartTime() == null && task2.getStartTime() == null) {
+                return Integer.compare(task1.getId(), task2.getId());
+            }
+            if (task1.getStartTime() == null) {
+                return 1;
+            }
+            if (task2.getStartTime() == null) {
+                return -1;
+            }
+            return task1.getStartTime().compareTo(task2.getStartTime());
+        });
         this.historyManager = historyManager;
     }
 
@@ -116,6 +129,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (isTimeOverlap(task)) {
             throw new IllegalArgumentException("Task time overlaps with an existing task");
         }
+
         tasks.put(task.getId(), task);
         prioritizedTasks.remove(savedTask);
         prioritizedTasks.add(task);
@@ -248,6 +262,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskById(int taskId) {
         Task task = tasks.get(taskId);
+        if (task == null) {
+            return null;
+        }
         historyManager.add(task);
         return task;
     }
@@ -255,6 +272,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask getSubtaskById(int subtaskId) {
         Subtask subtask = subtasks.get(subtaskId);
+        if (subtask == null) {
+            return null;
+        }
         historyManager.add(subtask);
         return subtask;
     }
@@ -262,6 +282,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic getEpicById(int epicId) {
         Epic epic = epics.get(epicId);
+        if (epic == null) {
+            return null;
+        }
         historyManager.add(epic);
         return epic;
     }

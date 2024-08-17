@@ -1,5 +1,6 @@
 package manager;
 
+import manager.exceptions.ManagerSaveException;
 import tasks.*;
 import java.io.*;
 import java.nio.file.Files;
@@ -73,9 +74,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try (BufferedWriter writer = Files.newBufferedWriter(file.toPath())) {
             writer.write(TITLE);
 
-            // Если этот цикл преобразовать со StreamAPI,
-            // то идея требует взять каждый отдельный writer.write() в try-catch,
-            // так код выходит более длинным и менее читаемым, чем есть.
             for (Task task : getAllTasks()) {
                 writer.write(toString(task) + "\n");
             }
