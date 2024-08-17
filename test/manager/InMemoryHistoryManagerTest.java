@@ -147,7 +147,7 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void epicShouldBeRemovedFromHistoryAfterDeleting() {
-        manager.getTaskById(epic.getId());  // Просмотр эпика для добавления в историю
+        manager.getEpicById(epic.getId());  // Просмотр эпика для добавления в историю
         manager.removeEpic(epic.getId());   // Удаляем эпик
 
         // Проверяем, что история пуста
@@ -165,7 +165,7 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void subtasksShouldBeDeletedFromHistoryAfterRemovingEpic() {
-        manager.getTaskById(subtask.getId());  // Просмотр подзадачи для добавления в историю
+        manager.getSubtaskById(subtask.getId());  // Просмотр подзадачи для добавления в историю
         manager.removeEpic(epic.getId());   // Удаляем эпик
 
         // Проверяем, что история пуста
