@@ -29,6 +29,7 @@ public interface TaskManager {
     Subtask getSubtaskById(int subtaskId);
 
     Epic getEpicById(int epicId);
+
     List<Task> getAllTasks();
 
     List<Task> getTasks();
